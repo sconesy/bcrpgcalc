@@ -2,11 +2,12 @@ const browserify = require("browserify"),
       babelify = require("babelify"),
       gulp = require("gulp"),
       gutil = require("gulp-util"),
+      myth = require("gulp-myth"),
       source = require("vinyl-source-stream"),
       // I don't think we need this
       //sourcemaps = require("gulp-sourcemaps"),
+      watch = require("gulp-watch"),
       watchify = require("watchify");
-
 
 function bundle(b, isRebuild) {
   if (isRebuild) gutil.log("Rebuilding bundle...");
@@ -23,6 +24,7 @@ function bundle(b, isRebuild) {
 
 function doBundle(cb, doWatch) {
   var b = browserify({
+    extensions: [".jsx", ".js"],
     entries: ["src/index.jsx"],
     debug: true
   });
@@ -34,14 +36,35 @@ function doBundle(cb, doWatch) {
   }
 
   b.transform(babelify, {
-    presets: ["es2015", "react", "stage-0"]
+    presets: ["react", "stage-0", "es2015"],
+    plugins: [
+      "transform-class-properties"
+    ]
   });
 
   return bundle(b);
 } 
 
-gulp.task("build", doBundle);
+function buildCss(cb, doWatch) {
+  var cssStream = gulp.src("style.css");
 
-gulp.task("watch", doBundle.bind(null, true));
+  if (doWatch) {
+    cssStream = cssStream.pipe(watch("style.css"));
+  } 
+
+  return cssStream.pipe(myth()).pipe(gulp.dest("dist/"));
+}
+
+gulp.task("build-js", doBundle);
+
+gulp.task("build-css", buildCss);
+
+gulp.task("build", ["build-js", "build-css"]);
+
+gulp.task("watch-js", doBundle.bind(null, true));
+
+gulp.task("watch-css", buildCss.bind(null, true));
+
+gulp.task("watch", ["watch-js", "watch-css"]);
 
 gulp.task("default", ["build"]);
