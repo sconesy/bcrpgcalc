@@ -1,8 +1,12 @@
 import alt from "../alt"
 
 class CalcActions {
-  updateCalc(calc) {
-    this.dispatch(calc);
+  updateCharacters(characters) {
+    this.dispatch(characters);
+  }
+
+  updatePottyMeter(o) {
+    this.dispatch(o);
   }
 }
 

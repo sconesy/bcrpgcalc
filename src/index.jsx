@@ -6,19 +6,17 @@ import CalcStore from "./stores/calc-store";
 import Character from "./components/character"; 
 
 class App extends Component {
+  // Needed or Babel explodes - see babel/babel#2775
+  constructor(props) { super(props) }
+
   state = CalcStore.getState();
 
-  // This is needed or Babel flips its shit
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
-    CalcStore.listen(this.onChange);
+    CalcStore.listen(this.onChange.bind(this));
   }
 
   componentWillUnmount() {
-    CalcStore.unlisten(this.onChange);
+    CalcStore.unlisten(this.onChange.bind(this));
   }
 
   onChange(state) {
@@ -26,15 +24,13 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <AltContainer>
-        {
-          this.props.characters.map((character, index) => (
-            <Character key={index} character={character}/>
-          ))
-        }
-      </AltContainer>
-    );
+    return <AltContainer>
+      {
+        this.state.characters.map((character, index) => 
+          <Character {...character} index={index} key={index}/>
+        )
+      }
+    </AltContainer>;
   }
 }
 
