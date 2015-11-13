@@ -12,26 +12,11 @@ class PottyMeter extends Component {
   render() {
     const pottyMeter = this.props;
 
-    // Copy actions locally for potential mutation
-    // FIXME: Maybe use lodash's cloneDeep instead
-    const actions = pottyMeter.actions.slice(); 
-
-    console.log(pottyMeter.value);
-
-    // If the value is equal or above the maximum, we've had an accident, so we
-    // add an additional action to acknowledge this and reset the meter
-    if (pottyMeter.value >= pottyMeter.capacity) {
-      actions.push({
-        label: "Uh oh~",
-        type: "reset"
-      });
-    }
-
     return <div className={PottyMeter.className}>
         <ProgressBar {...pottyMeter} />
         {
-          actions.map((action, index) => 
-            <ActionButton {...action} character={pottyMeter.character} pottyMeter={pottyMeter.index} key={index} />
+          pottyMeter.actions.map((action, index) => 
+            <ActionButton {...action} character={pottyMeter.character} pottyMeter={pottyMeter} key={index} />
           )
         }
     </div>;

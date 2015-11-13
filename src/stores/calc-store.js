@@ -1,64 +1,76 @@
-import alt from "../alt"
+import alt from "../alt";
+import _ from "lodash";
 import CalcActions from "../actions/calc-actions";
+
+const INITIAL_POTTY_METERS = [
+  {
+    type: "wet",
+    color: "yellow",
+    value: 0,
+    capacity: 100,
+    actions: [
+      {
+        label: "Wet",
+        type: "release"
+      },
+      {
+        label: "Spurt",
+        type: "decrease",
+        amount: 10
+      },
+      {
+        label: "Drink a bottle of water",
+        type: "increase",
+        amount: 30
+      }
+    ]
+  },
+  {
+    type: "mess",
+    color: "brown",
+    value: 0,
+    capacity: 100,
+    actions: [
+      {
+        label: "Mess",
+        type: "release"
+      },
+      {
+        label: "Let a little out",
+        type: "decrease",
+        amount: 10
+      },
+      {
+        label: "Eat a meal",
+        type: "increase",
+        amount: 30
+      }
+    ]
+  }
+]
 
 const INITIAL_STATE = {
   characters: [
     {
       name: "Jacqui",
-      pottyMeters: [
-        {
-          type: "wet",
-          color: "yellow",
-          value: 0,
-          capacity: 100,
-          actions: [
-            {
-              label: "Wet",
-              type: "release"
-            },
-            {
-              label: "Spurt",
-              type: "decrease",
-              amount: 10
-            },
-            {
-              label: "Drink a bottle of water",
-              type: "increase",
-              amount: 30
-            }
-          ]
-        },
-        {
-          type: "mess",
-          color: "brown",
-          value: 0,
-          capacity: 100,
-          actions: [
-            {
-              label: "Mess",
-              type: "release"
-            },
-            {
-              label: "Let a little out",
-              type: "decrease",
-              amount: 10
-            },
-            {
-              label: "Eat a meal",
-              type: "increase",
-              amount: 30
-            }
-          ]
-        }
-      ]
+      pottyMeters: _.cloneDeep(INITIAL_POTTY_METERS)
+    },
+    {
+      name: "Jess",
+      pottyMeters: _.cloneDeep(INITIAL_POTTY_METERS)
     }
   ]
+};
+
+const ACCIDENT_ACTION = {
+  label: "Uh oh! Time to change~",
+  type: "reset"
 };
 
 class CalcStore {
   constructor() {
     // TODO: Pull initial state from somewhere else?
-    Object.assign(this, INITIAL_STATE);
+    Object.assign(this, _.cloneDeep(INITIAL_STATE));
 
     this.bindListeners({
       handleUpdateCharacters: CalcActions.UPDATE_CHARACTERS,
@@ -67,8 +79,8 @@ class CalcStore {
   }
 
   handleUpdatePottyMeter({ character, pottyMeter, action }) {
-    const targetCharacter = this.characters[character];
-    const targetPottyMeter = targetCharacter.pottyMeters[pottyMeter];
+    const targetCharacter = this.characters[character.index];
+    const targetPottyMeter = targetCharacter.pottyMeters[pottyMeter.index];
 
     // TODO: Put string constants in symbols or something
     if (action.type === "increase") {
@@ -79,6 +91,19 @@ class CalcStore {
       targetPottyMeter.value = targetPottyMeter.capacity;
     } else if (action.type === "reset") {
       targetPottyMeter.value = 0;
+
+      // Filter out accident action
+      targetPottyMeter.actions = targetPottyMeter.actions.filter(function(x) {
+        if (x.type === ACCIDENT_ACTION.type) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    }
+
+    if (targetPottyMeter.value >= targetPottyMeter.capacity) {
+      targetPottyMeter.actions.push(ACCIDENT_ACTION);
     }
   }
 

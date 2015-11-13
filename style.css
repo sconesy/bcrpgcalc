@@ -1,7 +1,28 @@
 @media (min-width: 768px) {
   #app {
     margin: 0 auto;
+    padding: 0.5rem;
     width: 85%;
     border: 1px solid;
   }
+
+  .character {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}
+
+h3 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.character {
+  border: 1px solid;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+.potty-meter {
+  margin: 0.5rem 0;
 }

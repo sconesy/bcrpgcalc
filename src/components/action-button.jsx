@@ -18,11 +18,28 @@ class ActionButton extends Component {
 
   static className = "action-button";
 
+  isDisabled() {
+    const { pottyMeter, ...action} = this.props;
+
+    if (pottyMeter.value === 0) {
+      if (action.type === "decrease" || action.type === "release") {
+        return true;
+      }
+    } else if (pottyMeter.value >= pottyMeter.capacity) {
+      if (action.type !== "reset") {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   render() {
     const actionButton = this.props;
+    const disabled = this.isDisabled();
 
     // TODO
-    return <button onClick={this.handleClick.bind(this)}>
+    return <button className={ActionButton.className} onClick={this.handleClick.bind(this)} disabled={disabled}>
       {actionButton.label}
     </button>;
   }

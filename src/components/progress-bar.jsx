@@ -7,8 +7,12 @@ class ProgressBar extends Component {
   static className = "progress-bar";
 
   render() {
+    const pottyMeter = this.props; 
+
     // TODO
-    return <p>ProgressBar TODO</p>;
+    return <div className={ProgressBar.className}>
+      <span>{pottyMeter.value} / {pottyMeter.capacity}</span>
+    </div>;
   }
 }
 
