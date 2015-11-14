@@ -1,12 +1,15 @@
 import alt from "../alt"
+import _ from "lodash";
+
+import CalcStore from "../stores/calc-store";
 
 class CalcActions {
-  updateCharacters(characters) {
-    this.dispatch(characters);
+  processPottyAction(character, pottyMeter, action) {
+    return { character, pottyMeter, action };
   }
 
-  updatePottyMeter(o) {
-    this.dispatch(o);
+  advanceTime(numTicks) {
+    return numTicks;
   }
 }
 

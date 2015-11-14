@@ -9,9 +9,25 @@ class ProgressBar extends Component {
   render() {
     const pottyMeter = this.props; 
 
+    const outerStyle = {
+      color: pottyMeter.textColor
+//      borderColor: pottyMeter.barColor
+    };
+
+    const innerStyle = {
+      width: `${pottyMeter.value / pottyMeter.capacity * 100}%`,
+      backgroundColor: pottyMeter.barColor
+    };
+
     // TODO
-    return <div className={ProgressBar.className}>
-      <span>{pottyMeter.value} / {pottyMeter.capacity}</span>
+    return <div className={ProgressBar.className} style={outerStyle}>
+      <span className={`${ProgressBar.className}--text`}>
+        <span>{pottyMeter.value} / {pottyMeter.capacity}</span>
+        <span>
+          {pottyMeter.accidentCount > 0 && ` (Accidents: ${pottyMeter.accidentCount})`}
+        </span>
+      </span>
+      <div style={innerStyle} className={`${ProgressBar.className}--display`} />
     </div>;
   }
 }

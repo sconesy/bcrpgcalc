@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import _ from "lodash";
+
+import CalcActions from "../actions/calc-actions";
 
 import ProgressBar from "./progress-bar";
 import ActionButton from "./action-button";

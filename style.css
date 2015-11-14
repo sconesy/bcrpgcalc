@@ -26,3 +26,27 @@ h3 {
 .potty-meter {
   margin: 0.5rem 0;
 }
+
+.progress-bar {
+  border: 1px solid black;
+  /* Makes text readable on different BG colours */
+  /*
+  text-shadow:  white 0.5px 0.5px, white -0.5px -0.5px;
+  */
+  text-align: center;
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.progress-bar--text {
+  padding: 0 0.25rem;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar--display {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: -1;
+  transition: width 200ms;
+}

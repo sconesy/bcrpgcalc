@@ -6,17 +6,13 @@ class ActionButton extends Component {
   // Needed or Babel explodes - see babel/babel#2775
   constructor(props) { super(props) }
 
+  static className = "action-button";
+
   handleClick(event) {
     const { character, pottyMeter, ...action } = this.props;
 
-    CalcActions.updatePottyMeter({
-      character,
-      pottyMeter,
-      action
-    });
+    CalcActions.processPottyAction(character, pottyMeter.index, action);
   }
-
-  static className = "action-button";
 
   isDisabled() {
     const { pottyMeter, ...action} = this.props;

@@ -4,6 +4,7 @@ import AltContainer from "alt-container";
 
 import CalcStore from "./stores/calc-store";
 import Character from "./components/character"; 
+import TimeButton from "./components/time-button";
 
 class App extends Component {
   // Needed or Babel explodes - see babel/babel#2775
@@ -24,13 +25,15 @@ class App extends Component {
   }
 
   render() {
-    return <AltContainer>
-      {
-        this.state.characters.map((character, index) => 
-          <Character {...character} index={index} key={index}/>
-        )
-      }
-    </AltContainer>;
+    const characters = this.state.characters.map((character, index) => 
+      <Character {...character} index={index} key={index} />
+    );
+
+    const buttons = this.state.timeIntervals.map((timeInterval, index) => 
+      <TimeButton {...timeInterval} index={index} key={index} />
+    );
+
+    return <AltContainer>{characters.concat(buttons)}</AltContainer>;
   }
 }
 

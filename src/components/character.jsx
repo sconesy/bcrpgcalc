@@ -14,7 +14,7 @@ class Character extends Component {
       <h3>{character.name}</h3>
       {
         character.pottyMeters.map((pottyMeter, index) => 
-          <PottyMeter {...pottyMeter} character={character} index={index} key={index} /> 
+          <PottyMeter {...pottyMeter} character={character.index} index={index} key={index} /> 
         )
       }
     </section>;
